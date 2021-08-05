@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+
+{% block container %}
+<div class="container-fluid pt-5">
+    <div class="row justify-content-center mt-5 d-flex">
+        <div class="col-md-8">
+            <div class="pb-5 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 m-3">
+                        <form action="{% url 'group_remove' id %}" method="post">
+                            {% csrf_token %}
+                            <a class="btn btn-light p-4" href="#" role="button">
+                                {{ group_name }} <br>
+                                主催者：{{ username }}
+                            </a>
+                            <br>
+                            <button type="submit" class="btn btn-success mt-4 p-2">このグループから退会する</button>
+                            <!-- <button type="submit" class="btn btn-light btn-block border-0 m-3" style="background-color: rgba(191, 202, 63, 0.99);">この旅行を削除</button> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

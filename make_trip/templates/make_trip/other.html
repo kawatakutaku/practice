@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+
+{% block container %}
+{% load humanize %}
+{% load boost %}
+<div class="container-fluid pt-5">
+    <div class="row justify-content-center d-flex">
+        <div class="col-md-8 col-xl-6">
+            <form action="{% url 'other' id %}" method="post">
+                {% csrf_token %}
+                {% for other in others %}
+                    <div class="row mb-3 justify-content-center border-bottom border-light mx-auto p-2">
+                        <div class="col-4">
+                            <h5 class="text-secondary">{{ other.extra_name }}</h5>
+                        </div>
+                        <div class="col-4">
+                            <h6 class="text-secondary">¥ {{ other.extra_cost|intcomma }} </h6>
+                        </div>
+                        <a href="{% url 'other_edit' other.id %}" class="text-success"><i class="fa fa-edit"></i></a>
+                        <a href="{% url 'other_delete' other.id %}" class="ml-4 text-success"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                    {% endfor %}
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h3 class="text-light mb-3">費用の項目</h3>
+                            <div class="row mb-5 justify-content-center">
+                                <div class="col-8">{{ other.extra_name }}</div>
+                            </div>
+                            <h3 class="text-light mb-3">追加の費用</h3>
+                            <div class="row mb-5 justify-content-center">
+                                <div class="col-8">{{ other.extra_cost }}</div>
+                                {% if other.extra_cost.errors %}
+                                    <ul class="list-unstyled">
+                                        {% for error in other.extra_cost.errors %}
+                                            <li class="text-danger">{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-3 text-secondary border-bottom border-dark">
+                            <h5>¥ <span id="other_cost"> {{ other_cost|intcomma }}</span> </h5>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-xl-3 col-xs-12 mx-auto">
+                        <button type="submit" class="btn btn-success btn-block">登録</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

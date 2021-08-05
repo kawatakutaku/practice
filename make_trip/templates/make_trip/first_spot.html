@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+
+{% block container %}
+<div class="container-fluid">
+    <div class="row justify-content-center d-flex">
+        <div class="col-md-8 col-xl-6">
+            <form action="{% url 'first_spot' %}" method="post">
+                {% csrf_token %}
+                <h4 class="text-light mt-5">最初の観光地 or 出発地を入力してください</h4>
+                <div class="row mb-5 mt-5 justify-content-center pb-3">
+                    <div class="col-8">
+                        <p class="text-secondary">観光地 or 出発地</p>
+                        {{ spot.spot_name }}
+                    </div>
+                </div>
+                <div class="row mb-5 mt-5 justify-content-center pb-3">
+                    <div class="col-8" id="spot_time">
+                        <p class="text-secondary">到着時間を入力</p>
+                        {{ spot.spot_time }}
+                        {% if error_msg_spot_1 or error_msg_spot_2 %}
+                        <ul class="list-unstyled">
+                            <li class="text-danger">{{ error_msg_spot_1 }}</li>
+                            <li class="text-danger">{{ error_msg_spot_2 }}</li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-5 mt-5 justify-content-center pb-3">
+                    <div class="col-8">
+                        <p class="text-secondary">現地の滞在料金を入力(料金がない場合は0でOK)</p>
+                        {{ spot.spot_cost }}
+                        {% if spot.spot_cost.errors %}
+                            <ul class="list-unstyled">
+                                {% for error in spot.spot_cost.errors %}
+                                    <li class="text-danger">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-3 col-xs-12 mx-auto mt-5">
+                    <button type="submit" class="btn btn-success btn-block">登録</button>
+                </div>
+                <input type="hidden" id="start" value="{{ start|date:'Y-m-d' }}">
+                <input type="hidden" id="end" value="{{ end|date:'Y-m-d' }}">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(function(){
+        $.datetimepicker.setLocale('ja');
+
+        let start_time = $('#start').val();
+        let end_time = $('#end').val();
+        console.log(start_time);
+        console.log(end_time);
+        let first_spot;
+
+        // startの時間
+        let start_year = []
+        let start_month = []
+        let start_date = []
+
+        // endの時間
+        let end_year = []
+        let end_month = []
+        let end_date = []
+
+        for (let i=0; i<10; i++){
+            if (i < 4){
+                start_year += start_time[i];
+                end_year += end_time[i];
+            }else if(4 < i && i < 7){
+                start_month += start_time[i];
+                end_month += end_time[i];
+            }else if(7 < i && i < 10){
+                start_date += start_time[i];
+                end_date += end_time[i];
+        }}
+
+        // start_timeとend_timeに型を整えて格納する
+        error_end_time = new Date(Number(end_year), Number(end_month)-1, Number(end_date));
+        end_time = new Date(Number(end_year), Number(end_month)-1, Number(end_date)+1);
+        start_time = new Date(Number(start_year), Number(start_month)-1, Number(start_date));
+        datetime_start_time = new Date(Number(start_year), Number(start_month)-1, Number(start_date), Number(0), Number(0));
+
+        $('.bigDate').datetimepicker({
+            timepicker: false,
+            format: 'Y-m-d',
+            numberOfMonths: 2
+        });
+
+        $('.smallDate').datetimepicker({
+            defaultDate: datetime_start_time,
+            step: 15,
+            format: 'Y-m-d H:i',
+        });
+
+        console.log(start_time);
+        console.log(end_time);
+
+        $('#spot_time').find(".smallDate").on("blur", function () {
+            let error = false;
+            let value = $(this).val();
+            // 今日の日付を取得する
+            // フォームに入力された年月日のを入れる
+            let year_ls = []
+            let month_ls = []
+            let day_ls = []
+            let hour_ls = []
+            let min_ls = []
+
+            // フォームに入力されたのはstringだから数字に直す
+            for (let i=0; i<16; i++){
+                if (i < 4){
+                    year_ls += value[i];
+                }else if(4 < i && i < 7){
+                    month_ls += value[i];
+                }else if(7 < i && i < 10){
+                    day_ls += value[i];
+                }else if(10 < i && i < 13){
+                    hour_ls += value[i];
+                }else if(13 < i && i < 16){
+                    min_ls += value[i];
+                }
+
+            }
+            // Dateの月は0~11になっている、日付は当日までをOKにしておくため
+            spot_time = new Date(Number(year_ls), Number(month_ls)-1, Number(day_ls), Number(hour_ls), Number(min_ls));
+            console.log('spot_time:', spot_time);
+
+            if (spot_time.getTime() <= start_time.getTime()) {
+                console.log(start_time.getTime());
+                console.log('早いわ');
+                if($(this).nextAll('span.error-info').length){
+                    $(this).nextAll('span.error-info').remove()
+                    $(this).after('<span class = "error-info text-danger">' +  start_time.getFullYear() + '年' + Number(start_time.getMonth() + 1) + '月' + start_time.getDate() + '日以降の日付を入力してください'+ '</span>');
+                } else {
+                    //メッセージを後ろに追加
+                    $(this).after('<span class = "error-info text-danger">' +  start_time.getFullYear() + '年' + Number(start_time.getMonth() + 1) + '月' + start_time.getDate() + '日以降の日付を入力してください'+ '</span>');
+                }
+            }else if(spot_time.getTime() >= end_time.getTime()){
+                console.log('遅いわ');
+                if($(this).nextAll('span.error-info').length){
+                    $(this).nextAll('span.error-info').remove()
+                    $(this).after('<span class = "error-info text-danger">' +  error_end_time.getFullYear() + '年' + Number(error_end_time.getMonth() + 1) + '月' + error_end_time.getDate() + '日以前の日付を入力してください'+ '</span>');
+                } else {
+                    //メッセージを後ろに追加
+                    $(this).after('<span class = "error-info text-danger">' +  error_end_time.getFullYear() + '年' + Number(error_end_time.getMonth() + 1) + '月' + error_end_time.getDate() + '日以前の日付を入力してください'+ '</span>');
+                }
+            }else {
+                console.log('エラーじゃねーわ');
+                //エラーじゃないのにメッセージがあったら
+                if($(this).nextAll('span.error-info').length) {
+                    //消す
+                    $(this).nextAll('span.error-info').remove();
+                }
+            }
+
+        });
+        $('form').on('submit', function(e){
+            if ($('span.error-info').length){
+                console.log('エラーあり');
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+{% endblock %}

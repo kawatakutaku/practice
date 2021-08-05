@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+
+{% block container %}
+<div class="container-fluid pt-5">
+    <div class="row justify-content-center mt-5 d-flex">
+        <div class="col-md-8">
+            <div class="pb-5 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 m-3">
+                        <form action="{% url 'member_delete' id %}" method="post">
+                            {% csrf_token %}
+                            <a class="btn btn-light p-4" href="#" role="button">
+                                {{ member.username }} <br>
+                            </a>
+                            <br>
+                            <button type="submit" class="btn btn-success mt-4 p-2 mb-3">このメンバーをグループから退会させる</button>
+                            {% if messages %}
+                                <ul class="messages list-unstyled">
+                                    {% for message in messages %}
+                                        <li {% if message.tags %} class="{{ message.tags }} text-danger"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

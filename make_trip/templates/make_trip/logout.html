@@ -1,0 +1,17 @@
+<!doctype html>
+{% extends 'make_trip/layout.html' %}
+{% block container%}
+<div class="container-fluid pt-5">
+    <div class="row">
+        <div class="col-sm-12 mt-5 mb-4">
+            <h3 class="text-light">ログアウトしますか？</h3>
+        </div>
+        <div class="col-12">
+            <form action="{% url 'logout_form' %}" method="post">
+                {% csrf_token %}
+                <a name="logout" id="logout" class="btn btn-light" href="{% url 'logout' %}" role="button" style="color: rgba(130, 130, 130, 1);">ログアウト</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

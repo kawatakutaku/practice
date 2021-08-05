@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+{% block container %}
+{% load boost %}
+{% if all_group and group_owners %}
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center d-flex">
+        <div class="col-md-8 col-xl-6 col-xs-4">
+            <h2 class="text-light">グループ一覧</h2>
+            <div class="row justify-content-center">
+                {% for group, group_owner in all_group|zip:group_owners %}
+                <div class="col-xs-4 col-sm-5 col-md-5 m-3">
+                    <a class="btn btn-light pt-4 pb-4" href="{% url 'group_trip' group.id %}" role="button">
+                        『{{ group.title }}』<br>
+                        グループの主催者：{{ group_owner }}
+                    </a>
+                    <div class="row justify-content-end">
+                        <div class="col-sm-7 col-md-4 col-xl-6 col-6">
+                            <a class="text-success" href="{% url 'group_remove' group.id %}"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container-fluid pt-5">
+    <div class="row justify-content-center d-flex mt-5">
+        <div class="col-md-8 col-xl-6">
+            <h3 class="text-light">さあ、旅行に行こう！</h3>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

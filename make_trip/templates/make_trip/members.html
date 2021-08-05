@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+{% block container %}
+{% load boost %}
+{% load humanize %}
+    <div class="container-fluid">
+        <div class="row justify-content-center mt-5 d-flex">
+            <div class="col-md-8">
+                <div class="pb-5 mb-5">
+                    <h2 class="text-light">メンバー一覧</h2>
+                    <div class="row justify-content-center">
+                        {% for member, id in members|zip:ids %}
+                            <div class="col-md-4 col-xs-12 m-3">
+                                <a class="btn btn-light btn-lg p-3 pr-5 pl-5" href="#" role="button">
+                                    {{ member }} <br>
+                                </a>
+                                <div class="row justify-content-end">
+                                    <div class="col-md-5 col-sm-9 col-7">
+                                        <a class="text-success" href="{% url 'member_delete' id %}"><i class="fas fa-trash-alt"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

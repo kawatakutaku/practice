@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+
+{% block container %}
+<div class="container-fluid pt-5">
+    <div class="row justify-content-center mt-5 d-flex">
+        <div class="col-md-4">
+            <div class="pb-5 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 m-3">
+                        <form action="{% url 'spot_delete' id %}" method="post">
+                            {% csrf_token %}
+                            <a class="btn btn-light p-4" href="#" role="button">
+                                {{ spot.spot_name }} ({{ spot.spot_cost }}円) <br>
+                                {{ spot.spot_time|date:'Y-m-d H:i' }} <br>
+                            </a>
+                            <br>
+                            <button type="submit" class="btn btn-success mt-4 p-2">この観光地を削除する</button>
+                            <p class="text-danger mt-3">観光地を削除すると、その観光地への移動手段も削除されます</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+
+{% block container %}
+{% load boost %}
+{% load humanize %}
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center d-flex">
+        <div class="col-md-8 col-xl-6">
+            <form action="{% url 'tranSpot' id %}" method="post">
+                {% csrf_token %}
+                <div class="row mb-5 justify-content-around">
+                    <div class="col-2 mr-5">
+                        <h6 class="text-secondary">{{ first_spot.spot_name }}</h6>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="text-secondary">{{ first_spot.spot_time|date:'m-d H:i' }}</h6>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="text-secondary">¥ {{ first_spot.spot_cost|intcomma }}</h6>
+                    </div>
+                </div>
+                {% for one_transports, one_spots in transports|zip:spots %}
+                <div class="row mb-5 justify-content-end">
+                    <div class="col-2">
+                        <h3 class="text-secondary">↓</h3>
+                    </div>
+                    <div class="col-3">
+                        <h6 class="text-secondary">{{ one_transports.transport_name }}</h6>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="text-secondary">{{ one_transports.transport_time|date:'m-d H:i' }}</h6>
+                    </div>
+                    <div class="col-3">
+                        <h6 class="text-secondary">¥ {{ one_transports.transport_fee|intcomma }}</h6>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-2 mr-5">
+                        <h6 class="text-secondary">{{ one_spots.spot_name }}</h6>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="text-secondary">{{ one_spots.spot_time|date:'m-d H:i' }}</h6>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="text-secondary">¥ {{ one_spots.spot_cost|intcomma }}</h6>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="row mb-5">
+                    <div class="col-2">
+                        <h1 class="text-secondary">↓</h1>
+                    </div>
+                    <div class="col-3">
+                        {{ transport.transport_name }}
+                    </div>
+                    <div class="col-4" id="transport_time">
+                        {{ transport.transport_time }}
+                        {% if error_before %}
+                            <ul class="list-unstyled">
+                                <li class="text-danger">{{ error_before }}</li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <div class="col-3">
+                        {{ transport.transport_fee }}
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-4">
+                        {{ spot.spot_name }}
+                    </div>
+                    <div class="col-4" id="spot_time">
+                        {{ spot.spot_time }}
+                        {% if error_after or error_early_spot %}
+                            <ul class="list-unstyled">
+                                <li class="text-danger">{{ error_after }}</li>
+                                <li class="text-danger">{{ error_early_spot }}</li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <div class="col-4">
+                        {{ spot.spot_cost }}
+                        {% if spot_form.spot_cost.errors %}
+                            <ul class="list-unstyled">
+                                {% for error in spot.spot_cost.errors %}
+                                    <li class="text-danger">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-3 text-secondary border-bottom border-dark">
+                        <h6>¥ <span id="costs"> {{ costs|intcomma }}</span> </h6>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-3 col-xs-12 mx-auto">
+                    <button type="submit" class="btn btn-success btn-block">登録</button>
+                </div>
+                <input type="hidden" id="end" class="bigDate" value="{{ end|date:'Y-m-d' }}">
+                <input type="hidden" id="before_time" class="smallDate" value="{{ before_time|date:'Y-m-d H:i' }}">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(function(){
+        $.datetimepicker.setLocale('ja');
+        $('.bigDate').datetimepicker({
+            timepicker: false,
+            format: 'Y-m-d',
+            numberOfMonths: 2
+        });
+
+        // views側から受け取るendとbefore_timeのデータを取得する
+        let end_time = $('#end').val();
+        let before_time = $('#before_time').val();
+
+        // 最初の観光地の時間に関して行う
+        let first_year = []
+        let first_month = []
+        let first_date = []
+        let first_hour = []
+        let first_min = []
+
+        // 帰宅の時間に関して行う
+        let end_year = []
+        let end_month = []
+        let end_date = []
+
+        // for文を回して1つずつ新しくyearやmonthやdateに入れていく
+        for (let i=0; i<16; i++){
+            if (i < 4){
+                first_year += before_time[i];
+                end_year += end_time[i];
+            }else if(4 < i && i < 7){
+                first_month += before_time[i];
+                end_month += end_time[i];
+            }else if(7 < i && i < 10){
+                first_date += before_time[i];
+                end_date += end_time[i];
+            }else if(10 < i && i < 13){
+                first_hour += before_time[i];
+            }else if(13 < i && i < 16){
+                first_min += before_time[i];
+            }
+        }
+
+        // エラーメッセージ用のend_timeを作っておく => じゃないと、7/31と8/1みたいな関係の時にエラーメッセージで8/0となってしまう
+        error_end_time = new Date(Number(end_year), Number(end_month)-1, Number(end_date));
+        end_time = new Date(Number(end_year), Number(end_month)-1, Number(end_date)+1);
+        before_time = new Date(Number(first_year), Number(first_month)-1, Number(first_date), Number(first_hour), Number(first_min));
+
+
+        $('.smallDate').datetimepicker({
+            defaultDate: before_time,
+            step: 15,
+            format: 'Y-m-d H:i',
+        });
+
+        console.log(end_time);
+        console.log(before_time);
+
+        let spot_time, transport_time;
+        $('#transport_time').find(".smallDate").on("blur", function () {
+            let error = false;
+            let value = $(this).val();
+            // 今日の日付を取得する
+            // フォームに入力された年月日のを入れる
+            let year_ls = []
+            let month_ls = []
+            let day_ls = []
+            let hour_ls = []
+            let min_ls = []
+            console.log('value:', value);
+
+            // フォームに入力されたのはstringだから数字に直す
+            for (let i=0; i<16; i++){
+                if (i < 4){
+                    year_ls += value[i];
+                }else if(4 < i && i < 7){
+                    month_ls += value[i];
+                }else if(7 < i && i < 10){
+                    day_ls += value[i];
+                }else if(10 < i && i < 13){
+                    hour_ls += value[i];
+                }else if(13 < i && i < 16){
+                    min_ls += value[i];
+                }
+
+            }
+            // Dateの月は0~11になっている、日付は当日までをOKにしておくため
+            transport_time = new Date(Number(year_ls), Number(month_ls)-1, Number(day_ls), Number(hour_ls), Number(min_ls));
+
+            error = transport_time.getTime() - before_time.getTime();
+            console.log('error:', error);
+            console.log('transport_time:', transport_time.getTime());
+            console.log('before_time:', before_time.getTime());
+
+
+            if (transport_time.getTime() < before_time.getTime()) {
+                if($(this).nextAll('span.error-info').length){
+                    $(this).nextAll('span.error-info').remove()
+                    $(this).after('<span class = "error-info text-danger">' +  before_time.getFullYear() + '年' + Number(before_time.getMonth() + 1) + '月' + before_time.getDate() + '日' + before_time.getHours() + '時' + before_time.getMinutes() + '分以降の日時を入力してください</span>');
+                } else {
+                    //メッセージを後ろに追加
+                    $(this).after('<span class = "error-info text-danger">' +  before_time.getFullYear() + '年' + Number(before_time.getMonth() + 1) + '月' + before_time.getDate() + '日' + before_time.getHours() + '時' + before_time.getMinutes() + '分以降の日時を入力してください</span>');
+                }
+            }else if(transport_time.getTime() > end_time.getTime()){
+                if($(this).nextAll('span.error-info').length){
+                    $(this).nextAll('span.error-info').remove()
+                    $(this).after('<span class = "error-info text-danger">' +  error_end_time.getFullYear() + '年' + Number(error_end_time.getMonth() + 1) + '月' + error_end_time.getDate() + '日以前の日時を入力してください</span>');
+                } else {
+                    //メッセージを後ろに追加
+                    $(this).after('<span class = "error-info text-danger">' +  error_end_time.getFullYear() + '年' + Number(error_end_time.getMonth() + 1) + '月' + error_end_time.getDate() + '日以前の日時を入力してください</span>');
+                }
+            }else {
+                //エラーじゃないのにメッセージがあったら
+                if($(this).nextAll('span.error-info').length) {
+                    //消す
+                    $(this).nextAll('span.error-info').remove();
+                }
+            }
+
+            $('.smallDate').datetimepicker({
+                defaultDate: transport_time,
+                step: 15,
+                format: 'Y-m-d H:i',
+            });
+        });
+        $('#spot_time').find(".smallDate").on("blur", function () {
+            let error = false;
+            let value = $(this).val();
+            // 今日の日付を取得する
+            // フォームに入力された年月日のを入れる
+            let year_ls = []
+            let month_ls = []
+            let day_ls = []
+            let hour_ls = []
+            let min_ls = []
+
+            console.log('value:', value);
+
+            // フォームに入力されたのはstringだから数字に直す
+            for (let i=0; i<16; i++){
+                if (i < 4){
+                    year_ls += value[i];
+                }else if(4 < i && i < 7){
+                    month_ls += value[i];
+                }else if(7 < i && i < 10){
+                    day_ls += value[i];
+                }else if(10 < i && i < 13){
+                    hour_ls += value[i];
+                }else if(13 < i && i < 16){
+                    min_ls += value[i];
+                }
+
+            }
+            // Dateの月は0~11になっている、日付は当日までをOKにしておくため
+            spot_time = new Date(Number(year_ls), Number(month_ls)-1, Number(day_ls), Number(hour_ls), Number(min_ls));
+            console.log('spot_time:', spot_time.getTime());
+
+            if (spot_time.getTime() < transport_time.getTime()) {
+                //エラーで、エラーメッセージがなかったら
+                if(!$(this).nextAll('span.error-info').length) {
+                    //メッセージを後ろに追加
+                    $(this).after('<span class = "error-info text-danger">' +  transport_time.getFullYear() + '年' + Number(transport_time.getMonth() + 1) + '月' + transport_time.getDate() + '日' + transport_time.getHours() + '時' + transport_time.getMinutes() + '分以降の時間を入力してください</span>');
+                }
+            }else if(spot_time.getTime() > end_time.getTime()){
+                if($(this).nextAll('span.error-info').length){
+                    $(this).nextAll('span.error-info').remove()
+                    $(this).after('<span class = "error-info text-danger">' +  error_end_time.getFullYear() + '年' + Number(error_end_time.getMonth() + 1) + '月' + error_end_time.getDate() + '日以前の日付を入力してください</span>');
+                } else {
+                    //メッセージを後ろに追加
+                    $(this).after('<span class = "error-info text-danger">' +  error_end_time.getFullYear() + '年' + Number(error_end_time.getMonth() + 1) + '月' + error_end_time.getDate() + '日以前の日付を入力してください</span>');
+                }
+            }else {
+                //エラーじゃないのにメッセージがあったら
+                if($(this).nextAll('span.error-info').length) {
+                    //消す
+                    $(this).nextAll('span.error-info').remove();
+                }
+            }
+
+            $('.smallDate').datetimepicker({
+                defaultDate: spot_time,
+                step: 15,
+                format: 'Y-m-d H:i',
+            });
+        });
+        $('form').on('submit', function(e){
+            if ($('span.error-info').length){
+                console.log('エラーあり');
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+{% endblock %}

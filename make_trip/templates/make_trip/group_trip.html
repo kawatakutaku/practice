@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+{% block navigation %}
+<ul class="navbar-nav mr-3 mt-2 mt-lg-0">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'members' id %}">メンバーを表示</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'create_this_group_trip' id %}">このグループで旅行作成</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'add_member' id %}">招待リンク</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block container %}
+    {% if not trip_content_future and not trip_content_before %}
+        <div class="container-fluid pt-5">
+            <div class="row justify-content-center d-flex mt-5">
+                <div class="col-md-8 col-xl-6">
+                    <h4 class="text-secondary mb-5">『{{ group_name }}』の旅行一覧(人数：{{ member_cnt }}人)</h4>
+                    <h4 class="text-light">まだ、旅行は登録されていません...</h4>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="container-fluid">
+            <div class="row justify-content-center mt-5 d-flex">
+                <div class="col-md-8">
+                    <div class="border-bottom border-dark pb-5 mb-5">
+                        <h4 class="text-secondary mb-5">『{{ group_name }}』の旅行一覧(メンバー：{{ member_cnt }}人)</h4>
+                        <h4 class="text-light">次の旅行</h4>
+                        {% if trip_content_future %}
+                            <div class="row justify-content-center">
+                                {% for content in trip_content_future %}
+                                    <div class="col-md-4 m-3 col-sm-4">
+                                        <a class="btn btn-light pb-4 pt-4" href="{% url 'trip' content.id %}" role="button">
+                                            {{ content.trip_name }} <br>
+                                            {{ content.start }} 〜 {{ content.end }}
+                                        </a>
+                                        <div class="row justify-content-end">
+                                            <div class="col-sm-7 col-md-7 col-7 col-xl-4">
+                                                <a class="text-success" href="{% url 'trip' content.id %}"><i class="fa fa-edit"></i></a>
+                                                <a class="ml-4 text-success" href="{% url 'delete' content.id %}"><i class="fas fa-trash-alt"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <h4 class="text-light">これまでの旅行</h4>
+                            {% if trip_content_before %}
+                            <div class="row justify-content-center">
+                                {% for content in trip_content_before %}
+                                <div class="col-4 m-3">
+                                    <a class="btn btn-light btn-lg" href="{% url 'trip' content.id %}" role="button">
+                                        {{ content.trip_name }} <br>
+                                        {{ content.start }} 〜 {{ content.end }}
+                                    </a>
+                                    <div class="row justify-content-end">
+                                        <div class="col-sm-7 col-md-7 col-7 col-xl-4">
+                                            <a class="text-success" href="{% url 'trip' content.id %}"><i class="fa fa-edit"></i></a>
+                                            <a class="ml-4 text-success" href="{% url 'delete' content.id %}"><i class="fas fa-trash-alt"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

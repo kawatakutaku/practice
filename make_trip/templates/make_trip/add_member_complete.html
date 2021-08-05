@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+{% block container %}
+{% load boost %}
+<div class="container-fluid pt-5">
+    <div class="row justify-content-center d-flex mt-5">
+        <div class="col-md-8 col-xl-6">
+            <h2 class="text-secondary">『{{ group }}』に参加しますか？<br> </h2>
+            <form action="{% url 'add_member_complete' token %}" method="POST">
+                {% csrf_token %}
+                <!-- views側で参加ボタンを押したらmyPageに画面遷移するようにしておく -->
+                <button type="submit" class="btn btn-success mt-5 mb-3 btn-lg">参加する</button>
+                {% if messages %}
+                    <ul class="messages list-unstyled">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }} text-danger"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

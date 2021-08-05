@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
+{% block container %}
+{% load boost %}
+<div class="container-fluid mt-5 pt-5">
+    <div class="row justify-content-center d-flex">
+        <div class="col-md-8 col-xl-6">
+            <h3 class="text-light mb-5">{{ group }}のURLをコピーしてください</h3>
+            <div class="row">
+                <div class="col-12">
+                    <a name="group_url" id="group_url" class="btn btn-light btn-lg mb-3" href="{{ protocol}}://{{ domain }}{% url 'add_member_complete' token %}" role="button">URLをコピーする</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(function(){
+        // aタグがクリックされた時に画面遷移させない
+        $("#group_url").on('click', function(e){
+            e.preventDefault();  // 画面遷移を無効化
+        });
+        /// コピーテキストボタンを実装
+        $('a#group_url')
+        // tooltip設定
+        .tooltip({
+            trigger: 'manual'
+        })
+        // tooltip表示後の動作を設定
+        .on('shown.bs.tooltip', function(){
+            setTimeout((function(){
+            $(this).tooltip('hide');
+            }).bind(this), 1500);
+        })
+        .on('click',function(){
+            /// aタグのurlを取得
+            let url = $('a#group_url').attr('href');
+
+            // selectは直接できないから一旦textareaに入れる
+            let textarea = $('<textarea></textarea>');
+            textarea.text(url);
+            $(this).append(textarea);
+            textarea.select();
+            // コピー結果を取得してtextareaは削除
+            let copied = document.execCommand('copy');
+            textarea.remove();
+            // コピー結果によって表示変更
+            if(copied){
+                $('a#group_url').attr('data-original-title', 'コピーしました');
+            }else{
+                $('a#group_url').attr('data-original-title', 'コピー失敗しました');
+            }
+            // tooltip表示
+            $(this).tooltip('show');
+            /// コピー完了した後の処理
+            /// トースト通知と化すると親切かも...\
+        });
+    });
+</script>
+{% endblock %}
