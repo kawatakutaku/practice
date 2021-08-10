@@ -23,10 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#qy1jkj-%&k_o(bfv)pdo)+5r55hn^vx0ls==(l_#t5ek2t==q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =False
 
 ALLOWED_HOSTS = []
 # ALLOWED_HOSTS = ['127.0.0.1']
+
+
 
 
 # Application definition
@@ -125,8 +127,6 @@ NUMBER_GROUPING = 3
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
-
 LOGIN_URL = '/make_trip/'
 LOGIN_REDIRECT_URL = '/make_trip/myPage'
 LOGOUT_REDIRECT_URL = '/make_trip/'
@@ -137,5 +137,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # 自作のUserモデルを使用する
 AUTH_USER_MODEL = 'make_trip.User'
 
-import django_heroku
-django_heroku.settings(locals())
+# import django_heroku
+# django_heroku.settings(locals())
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
+if not DEBUG:
+    import django_heroku
+    django_heroku.settings(locals())
