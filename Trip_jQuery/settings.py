@@ -132,7 +132,7 @@ LOGIN_REDIRECT_URL = '/make_trip/myPage'
 LOGOUT_REDIRECT_URL = '/make_trip/'
 
 # emailをコンソールに送信する
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # 自作のUserモデルを使用する
 AUTH_USER_MODEL = 'make_trip.User'
