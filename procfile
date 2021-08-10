@@ -1,0 +1,3 @@
+web: gunicorn [Trip_jQuery].wsgi
+python-3.7.7
+

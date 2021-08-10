@@ -137,3 +137,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # 自作のUserモデルを使用する
 AUTH_USER_MODEL = 'make_trip.User'
 
+import django_heroku
+django_heroku.settings(locals())
