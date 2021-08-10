@@ -25,7 +25,7 @@ SECRET_KEY = '#qy1jkj-%&k_o(bfv)pdo)+5r55hn^vx0ls==(l_#t5ek2t==q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['our-trips.herokuapp.com']
 # ALLOWED_HOSTS = ['127.0.0.1']
 
 
@@ -89,6 +89,10 @@ DATABASES = {
     }
 }
 
+# 追記
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
