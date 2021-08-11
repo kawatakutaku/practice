@@ -131,8 +131,13 @@ LOGIN_URL = '/make_trip/'
 LOGIN_REDIRECT_URL = '/make_trip/myPage'
 LOGOUT_REDIRECT_URL = '/make_trip/'
 
-# emailをコンソールに送信する
+# emailを実際に送信する
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'kawataku.89love@gmail.com'
+EMAIL_HOST_PASSWORD = 'E30t1so2'
 
 # 自作のUserモデルを使用する
 AUTH_USER_MODEL = 'make_trip.User'
