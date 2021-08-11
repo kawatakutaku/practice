@@ -26,10 +26,6 @@ SECRET_KEY = '#qy1jkj-%&k_o(bfv)pdo)+5r55hn^vx0ls==(l_#t5ek2t==q'
 DEBUG =False
 
 ALLOWED_HOSTS = ['our-trips.herokuapp.com']
-# ALLOWED_HOSTS = ['127.0.0.1']
-
-
-
 
 # Application definition
 
@@ -140,10 +136,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # 自作のUserモデルを使用する
 AUTH_USER_MODEL = 'make_trip.User'
-
-# import django_heroku
-# django_heroku.settings(locals())
-
 
 try:
     from .local_settings import *
