@@ -1,2 +1,1 @@
-web: gunicorn Trip_jQuery.wsgi
-
+web: python app.py
