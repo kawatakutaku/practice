@@ -21,7 +21,6 @@ from django.conf import settings
 from django.utils.timezone import localtime
 from django.contrib import messages
 from django.views.decorators.csrf import requires_csrf_token
-import requests
 import json
 import traceback
 
@@ -1158,15 +1157,6 @@ def tranSpot(request, num):
 
 @requires_csrf_token
 def my_customized_server_error(request, template_name='500.html'):
-    requests.post(
-        'w1617413633-hou950608.slack.com',
-        data=json.dumps({
-            'text': '\n'.join([
-                f'Request uri: {request.build_absolute_uri()}',
-                traceback.format_exc(),
-            ]),
-            'username': 'Django エラー通知',
-            'icon_emoji': ':jack_o_lantern:',
-        })
-    )
+    import traceback
+    print(traceback.format_exc())
     return HttpResponseServerError('<h1>Server Error (500)だよー</h1>')
