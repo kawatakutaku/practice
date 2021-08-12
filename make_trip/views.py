@@ -1158,15 +1158,7 @@ def tranSpot(request, num):
 
 @requires_csrf_token
 def my_customized_server_error(request, template_name='500.html'):
-    requests.post(
-        'https://hooks.slack.com/services/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',
-        data=json.dumps({
-            'text': '\n'.join([
-                f'Request uri: {request.build_absolute_uri()}',
-                traceback.format_exc(),
-            ]),
-            'username': 'Django エラー通知',
-            'icon_emoji': ':jack_o_lantern:',
-        })
-    )
-    return HttpResponseServerError('<h1>Server Error (500)だよー</h1>')
+    import sys
+    from django.views import debug
+    error_html = debug.technical_500_response(request, *sys.exc_info()).content
+    return HttpResponseServerError(error_html)
