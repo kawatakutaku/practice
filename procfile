@@ -1,1 +1,0 @@
-web: gunicorn Trip_jQuery.wsgi --log-file -
