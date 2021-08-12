@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 from django.http.response import HttpResponseBadRequest, Http404
 from django.shortcuts import render, redirect
 from .forms import BudgetForm, MemoForm, SignUp, Login, GroupForm, TripForm, SpotForm, OtherForm, TransportForm, AddGroup
@@ -20,6 +20,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils.timezone import localtime
 from django.contrib import messages
+from django.views.decorators.csrf import requires_csrf_token
 
 User = get_user_model()
 
@@ -1152,180 +1153,17 @@ def tranSpot(request, num):
         return redirect(to='/make_trip/myPage')
 
 
-@login_required(login_url='/make_trip/')
-def test(request):
-    OtherFormSet = forms.modelformset_factory(
-        Other, form=OtherForm, extra=1
+@requires_csrf_token
+def my_customized_server_error(request, template_name='500.html'):
+    requests.post(
+        'w1617413633-hou950608.slack.com',
+        data=json.dumps({
+            'text': '\n'.join([
+                f'Request uri: {request.build_absolute_uri()}',
+                traceback.format_exc(),
+            ]),
+            'username': 'Django エラー通知',
+            'icon_emoji': ':jack_o_lantern:',
+        })
     )
-    SpotFormSet = forms.modelformset_factory(
-        Spot, form=SpotForm, extra=1
-    )
-    TransportFormSet = forms.modelformset_factory(
-        Transport, form=TransportForm, extra=1
-    )
-    group = GroupForm(request.POST or None)
-    trip = TripForm(request.POST or None)
-    spot_form = SpotForm(request.POST or None)
-    spots = SpotFormSet(request.POST or None, queryset=Spot.objects.none())
-    transports = TransportFormSet(request.POST or None, queryset=Transport.objects.none())
-    others = OtherFormSet(request.POST or None, queryset=Other.objects.none())
-
-    '''if request.method == 'POST':
-        group = GroupForm()
-        trip = TripForm(request.POST)
-        others = OtherFormSet(request.POST)
-        spots = SpotFormSet(request.POST)
-        spot_form = SpotForm(request.POST)
-        transports = TransportFormSet(request.POST)'''
-
-    if group.is_valid() and trip.is_valid()and others.is_valid() and spots.is_valid() and spot_form.is_valid() and transports.is_valid():
-        # まずはgroupにデータを保存する <= userの情報が抜けているからそれを入れる
-        group_db = group.save(commit=False) # commitをfalseにすることでDBに保存する前の状態で止まる
-        group_db.user = request.user
-        group_db.save()
-
-        # さっき保存したgroupの情報を取得
-        group_id = Group.objects.filter(user=request.user).filter(title=request.POST['title']).order_by('-id').first()
-        trip_db = trip.save(commit=False)
-        trip_db.group = group_id
-        trip_db.save()
-
-        # 保存したtripの情報を取得
-        trip_id = Trip.objects.filter(group=group_id).first()
-        print('trip_id:', type(trip_id))
-
-        spot_save = spot_form.save(commit=False)
-        spot_save.trip = trip_id
-        spot_save.save()
-
-        spot = spots.save(commit=False)
-        for spot_db in spot:
-            spot_db.trip = trip_id
-            spot_db.save()
-
-        other = others.save(commit=False)
-        for other_db in other:
-            other_db.trip = trip_id
-            other_db.save()
-
-        # transport用にspotの情報を取得する
-        spot_id = Spot.objects.filter(trip=trip_id)
-        transport = transports.save(commit=False)
-        for i in range(len(transport)):
-            transport[i].spot = spot_id[i]
-            transport[i].save()
-
-        return redirect(to='/make_trip/myPage')
-
-    params = {
-        'group': group,
-        'trip': trip,
-        'others': others,
-        'spots': spots,
-        'spot_form': spot_form,
-        'transports': transports
-    }
-
-    return render(request, 'make_trip/trip.html', params)
-
-@login_required(login_url='/make_trip/')
-def edit(request, num):
-    trip_model = Trip.objects.get(id=num)
-    print('trip_model:', trip_model)
-    group_model = Group.objects.get(id=trip_model.group.id)
-    print('group_model:', group_model)
-    trip = Trip.objects.filter(group=group_model)
-    print('trip:',type(trip))
-    if group_model.user == request.user:
-        other_model = Other.objects.filter(trip=trip_model.id)
-        spot_model = Spot.objects.filter(trip=trip_model)
-        spot_first_model = Spot.objects.filter(trip=trip_model).first()
-        transport_model = Transport.objects.filter(spot__in=spot_model)
-        print('spot_model:', spot_model)
-
-        OtherFormSet = forms.modelformset_factory(
-            Other, form=OtherForm, extra=0
-        )
-        SpotFormSet = forms.modelformset_factory(
-            Spot, form=SpotForm, extra=0
-        )
-        TransportFormSet = forms.modelformset_factory(
-            Transport, form=TransportForm, extra=0
-        )
-
-        # idがnumのtripを取得する
-        if request.method == 'POST':
-            print('request.post:', request.POST)
-            # 更新時は既に親モデルと繋がっている状態で渡されるから、いちいち外部キーを取得する必要はない
-            group = GroupForm(request.POST, instance=group_model)
-            trip = TripForm(request.POST, instance=trip_model)
-            others = OtherFormSet(request.POST, queryset=other_model)
-            spots = SpotFormSet(request.POST, queryset=spot_model)
-            print('spots:', spots)
-            spot_first = SpotForm(request.POST, instance=spot_first_model)
-            print('spot_first:', spot_first)
-            transports = TransportFormSet(request.POST, queryset=transport_model)
-            print('postされました')
-            # バリデーションのチェック
-            if group.is_valid() and trip.is_valid() and spot_first.is_valid():
-                group.save()
-                trip.save()
-                spot_first.save()
-                # trip_id = Trip.objects.filter(id=num)
-
-                for other in others:
-                    if other.is_valid():
-                        other_db = other.save(commit=False)
-                        other_db.trip = trip_model
-                        other_db.save()
-
-                for spot in spots:
-                    if spot.is_valid():
-                        spot_db = spot.save(commit=False)
-                        spot_db.trip = trip_model
-                        spot_db.save()
-
-                # transport用にspotの情報を取得する
-                spot_id = Spot.objects.filter(trip=trip_model)
-                print('spot_id:', spot_id)
-                for i in range(len(transports)):
-                    if transports[i].is_valid():
-                        transport = transports[i].save(commit=False)
-                        transport.spot = spot_id[i]
-                        transport.save()
-
-                return redirect(to='/make_trip/myPage')
-
-        # Getアクセス時の処理
-        else:
-            group = GroupForm(instance=group_model)
-            trip = TripForm(instance=trip_model)
-            others = OtherFormSet(queryset=other_model)
-            spots = SpotFormSet(queryset=spot_model)[1:]
-            transports = TransportFormSet(queryset=transport_model)
-            spot_first = SpotForm(instance=spot_first_model)
-
-        # 金額だけを取得する
-        spot_cost = Spot.objects.filter(trip=trip_model).values('spot_cost')
-        transport_cost = Transport.objects.filter(spot__in=spot_model).values('transport_fee')
-        other_cost = Other.objects.filter(trip=trip_model).values('extra_cost')
-        # 取得した金額をリストに格納する
-        spot_cost_ls = [spot_cost[i]['spot_cost'] for i in range(len(spot_cost))]
-        transport_cost_ls = [transport_cost[i]['transport_fee'] for i in range(len(transport_cost))]
-        other_cost_ls = [other_cost[i]['extra_cost'] for i in range(len(other_cost))]
-        all_cost = sum(spot_cost_ls) + sum(transport_cost_ls) + sum(other_cost_ls)
-
-        params = {
-            'group': group,
-            'trip': trip,
-            'others': others,
-            'spots': spots,
-            'transports': transports,
-            'spot_first': spot_first,
-            'id': num,
-            'all_money': all_cost
-        }
-        return render(request, 'make_trip/edit.html', params)
-
-    else:
-        return redirect(to='/make_trip/myPage')
+    return HttpResponseServerError('<h1>Server Error (500)だよー</h1>')
