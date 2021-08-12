@@ -30,7 +30,5 @@ urlpatterns = [
     path('tranSpot/<int:num>', views.tranSpot, name="tranSpot"),
     path('add_member/<int:num>', views.add_member, name="add_member"),
     path('add_member_complete/<token>', views.add_member_complete, name="add_member_complete"),
-    path('edit/<int:num>', views.edit, name="edit"),
-    path('test', views.test, name="test"),
     path('add_group', views.add_group, name="add_group"),
 ]
