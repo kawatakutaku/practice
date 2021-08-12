@@ -74,6 +74,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Trip_jQuery.wsgi.application'
 
+# ここでこれを定義しておかないとエラーになってしまう
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
