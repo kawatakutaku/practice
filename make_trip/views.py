@@ -1159,7 +1159,7 @@ def tranSpot(request, num):
 @requires_csrf_token
 def my_customized_server_error(request, template_name='500.html'):
     requests.post(
-        'w1617413633-hou950608.slack.com',
+        'https://hooks.slack.com/services/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',
         data=json.dumps({
             'text': '\n'.join([
                 f'Request uri: {request.build_absolute_uri()}',
