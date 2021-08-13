@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 
+from make_trip.views import my_customized_server_error
+handler500 = my_customized_server_error
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('make_trip/', include('make_trip.urls'))
