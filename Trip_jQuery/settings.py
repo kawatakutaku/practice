@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_boost',
     'bootstrap4',
     'django.contrib.humanize',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
