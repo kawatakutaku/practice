@@ -1161,7 +1161,18 @@ from django.http import (
     HttpResponseServerError,)
 @requires_csrf_token
 def my_customized_server_error(request, template_name='500.html'):
-    import sys
-    from django.views import debug
-    error_html = debug.technical_500_response(request, *sys.exc_info()).content
-    return HttpResponseServerError(error_html)
+    import requests
+    import json
+    import traceback
+    requests.post(
+        'https://hooks.slack.com/services/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',
+        data=json.dumps({
+            'text': '\n'.join([
+                f'Request uri: {request.build_absolute_uri()}',
+                traceback.format_exc(),
+            ]),
+            'username': 'Django エラー通知',
+            'icon_emoji': ':jack_o_lantern:',
+        })
+    )
+    return HttpResponseServerError('<h1>Server Error (500)だよー</h1>')
