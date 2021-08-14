@@ -34,7 +34,7 @@ class Login(LoginView):
 class Logout(LoginRequiredMixin, LogoutView):
     template_name = 'make_trip/logout.html'
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def logout_form(request):
 
     return render(request, 'make_trip/logout.html')
@@ -109,7 +109,7 @@ class SignUpComplete(generic.TemplateView):
 
         return HttpResponseBadRequest()
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def add_member(request, num):
     try:
         this_group = Group.objects.get(id=num)
@@ -136,7 +136,7 @@ def add_member(request, num):
     else:
         return redirect(to='/make_trip/myPage')
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def add_group(request):
     if request.method == 'POST':
         input_url = AddGroup(request.POST)
@@ -151,7 +151,7 @@ def add_group(request):
 
     return render(request, 'make_trip/add_group.html', params)
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def add_member_complete(request, token):
     # 参加させるグループを取得
     try:
@@ -185,7 +185,7 @@ def add_member_complete(request, token):
 
 
 # マイページの部分の処理
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def myPage(request):
     # requestしたユーザーがメンバーとして所属しているグループを取得
     group_member = Member.objects.filter(user=request.user).all().values('group')
@@ -231,7 +231,7 @@ def myPage(request):
 
     return render(request, 'make_trip/mypage.html', params)
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def groups(request):
     my_member = Member.objects.filter(user=request.user).values('group')
 
@@ -262,7 +262,7 @@ def groups(request):
 
     return render(request, 'make_trip/groups.html', params)
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def group_trip(request, num):
     # tripの情報があるかチェックする
     try:
@@ -314,7 +314,7 @@ def group_trip(request, num):
         return redirect(to='/make_trip/myPage')
 
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def members(request, num):
     # 所属しているグループのtrip情報を取得
 
@@ -347,7 +347,7 @@ def members(request, num):
     else:
         return redirect(to='/make_trip/myPage')
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def member_delete(request, num):
     # request.userがグループのメンバーかどうかを判定
     member = Member.objects.filter(id=num).first()
@@ -378,7 +378,7 @@ def member_delete(request, num):
         return redirect(to='/make_trip/myPage')
 
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def delete(request, num):
     # trip_idを元にしてメンバーが所属しているかチェック
     try:
@@ -402,7 +402,7 @@ def delete(request, num):
 
 
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def create_trip(request):
     # views側でもエラーの時にセッションを残すようにしておく
     group = GroupForm(request.POST or None)
@@ -465,7 +465,7 @@ def create_trip(request):
 
     return render(request, 'make_trip/create_trip.html', params)
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def first_spot(request):
     spot = SpotForm(request.POST or None)
 
@@ -515,7 +515,7 @@ def first_spot(request):
     return render(request, 'make_trip/first_spot.html', params)
 
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def create_this_group_trip(request, num):
     # views側でもエラーの時にセッションを残すようにしておく
     trip = TripForm(request.POST or None)
@@ -581,7 +581,7 @@ def create_this_group_trip(request, num):
 
 
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def group_trip_first_spot(request, num):
     spot = SpotForm(request.POST or None)
 
@@ -642,7 +642,7 @@ def group_trip_first_spot(request, num):
         return redirect(to='/make_trip/myPage')
 
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def other(request, num):
     other = OtherForm(request.POST or None)
 
@@ -676,7 +676,7 @@ def other(request, num):
     else:
         return redirect(to='/make_trip/myPage')
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def trip(request, num):
     try:
         trip = Trip.objects.get(id=num)
@@ -747,7 +747,7 @@ def trip(request, num):
         return redirect(to='/make_trip/myPage')
 
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def trip_edit(request, num):
     try:
         trip_obj = Trip.objects.get(id=num)
@@ -796,7 +796,7 @@ def trip_edit(request, num):
     else:
         return redirect(to='/make_trip/myPage')
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def spot_edit(request, num):
     try:
         spot_db = Spot.objects.get(id=num)
@@ -888,7 +888,7 @@ def spot_edit(request, num):
     else:
         return redirect(to='/make_trip/myPage')
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def transport_edit(request, num):
     try:
         transport_db = Transport.objects.get(id=num)
@@ -954,7 +954,7 @@ def transport_edit(request, num):
     else:
         return redirect(to='/make_trip/myPage')
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def other_edit(request, num):
     try:
         other_db = Other.objects.get(id=num)
@@ -985,7 +985,7 @@ def other_edit(request, num):
     else:
         return redirect(to='/make_trip/myPage')
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def spot_delete(request, num):
     try:
         spot = Spot.objects.get(id=num)
@@ -1020,7 +1020,7 @@ def spot_delete(request, num):
     else:
         return redirect(to='/make_trip/myPage')
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def other_delete(request, num):
     try:
         other_db = Other.objects.get(id=num)
@@ -1041,7 +1041,7 @@ def other_delete(request, num):
     else:
         return redirect(to='/make_trip/myPage')
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def group_remove(request, num):
     try:
         this_group = Group.objects.get(id=num)
@@ -1075,7 +1075,7 @@ def group_remove(request, num):
         return redirect(to='/make_trip/myPage')
 
 
-@login_required(login_url='/make_trip/')
+# @login_required(login_url='/make_trip/')
 def tranSpot(request, num):
     spot = SpotForm(request.POST or None)
     transport = TransportForm(request.POST or None)
