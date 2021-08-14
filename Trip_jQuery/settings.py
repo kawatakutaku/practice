@@ -88,13 +88,17 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'defdlls2h3qf1d',
+        'USER': 'dmbpsktrxqvnwl',
+        'PASSWORD': 'f3ed03b40ae1d30435cb9804adfb12a3f0a3b552364369da6ec2fc6d3c6fccea',
+        'HOST': 'ec2-52-0-67-144.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
 # 追記
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
+# DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
