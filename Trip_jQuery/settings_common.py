@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import django_heroku
-import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#qy1jkj-%&k_o(bfv)pdo)+5r55hn^vx0ls==(l_#t5ek2t==q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =False
+DEBUG =True
 
-ALLOWED_HOSTS = ['our-trips.herokuapp.com']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -60,8 +58,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
-ROOT_URLCONF = 'Trip_jQuery.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -78,8 +74,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Trip_jQuery.wsgi.application'
-
 # ここでこれを定義しておかないとエラーになってしまう
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
@@ -89,9 +83,9 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'defdlls2h3qf1d',
-        'USER': 'dmbpsktrxqvnwl',
-        'PASSWORD': 'f3ed03b40ae1d30435cb9804adfb12a3f0a3b552364369da6ec2fc6d3c6fccea',
+        'NAME': 'postgres',
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWD'),
         'HOST': 'ec2-52-0-67-144.compute-1.amazonaws.com',
         'PORT': '5432',
     }
