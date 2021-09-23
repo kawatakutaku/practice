@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#qy1jkj-%&k_o(bfv)pdo)+5r55hn^vx0ls==(l_#t5ek2t==q'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =True
@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWD'),
-        'HOST': 'ec2-52-0-67-144.compute-1.amazonaws.com',
+        'HOST': '',
         'PORT': '5432',
     }
 }
@@ -137,11 +137,54 @@ LOGOUT_REDIRECT_URL = '/make_trip/'
 
 # emailを実際に送信する
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.googlemail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'kawataku.89love@gmail.com'
-EMAIL_HOST_PASSWORD = 'tk81win54v6'
 
 # 自作のUserモデルを使用する
 AUTH_USER_MODEL = 'make_trip.User'
+
+# ロギングの設定
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'make_trip': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'dev',
+        },
+    },
+
+    'formatters': {
+        'dev': {
+            'format': '\t'.join([
+                '%(asctime)s',
+                '[%(levelname)s]',
+                '%(pathname)s(Line:%(lineno)d)',
+                '%(message)s'
+            ])
+        },
+    }
+}
+
+# 静的ファイルの設置場所
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static')
+)
+
+ROOT_URLCONF = 'deploy_project.urls'
+
+WSGI_APPLICATION = 'deploy_project.wsgi.application'
+
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
