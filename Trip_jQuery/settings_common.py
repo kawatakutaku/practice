@@ -173,7 +173,7 @@ LOGGING = {
 
 # 静的ファイルの設置場所
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
 )
 
 ROOT_URLCONF = 'Trip_jQuery.urls'
