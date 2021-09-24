@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'django_boost',
     'bootstrap4',
     'django.contrib.humanize',
-    'whitenoise.runserver_nostatic',
+    'django-ses',
 ]
 
 MIDDLEWARE = [
@@ -53,10 +54,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 TEMPLATES = [
     {
@@ -135,9 +132,6 @@ LOGIN_URL = '/make_trip/'
 LOGIN_REDIRECT_URL = '/make_trip/myPage'
 LOGOUT_REDIRECT_URL = '/make_trip/'
 
-# emailを実際に送信する
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
 # 自作のUserモデルを使用する
 AUTH_USER_MODEL = 'make_trip.User'
 
@@ -182,9 +176,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static')
 )
 
-ROOT_URLCONF = 'deploy_project.urls'
+ROOT_URLCONF = 'Trip_jQuery.urls'
 
-WSGI_APPLICATION = 'deploy_project.wsgi.application'
+WSGI_APPLICATION = 'Trip_jQuery.wsgi.application'
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+
+# デフォルトのメール送信元を設定
+DEFAULT_FROM_EMAIL = 'admin@example.com'
