@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django_boost',
     'bootstrap4',
     'django.contrib.humanize',
-    'django-ses',
+    'django_ses',
 ]
 
 MIDDLEWARE = [
