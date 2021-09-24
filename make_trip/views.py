@@ -1154,25 +1154,3 @@ def tranSpot(request, num):
 
     else:
         return redirect(to='/make_trip/myPage')
-
-from django.views.decorators.csrf import requires_csrf_token
-from django.http import (
-    HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound,
-    HttpResponseServerError,)
-@requires_csrf_token
-def my_customized_server_error(request, template_name='500.html'):
-    import requests
-    import json
-    import traceback
-    requests.post(
-        'https://hooks.slack.com/services/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',
-        data=json.dumps({
-            'text': '\n'.join([
-                f'Request uri: {request.build_absolute_uri()}',
-                traceback.format_exc(),
-            ]),
-            'username': 'Django エラー通知',
-            'icon_emoji': ':jack_o_lantern:',
-        })
-    )
-    return HttpResponseServerError('<h1>Server Error (500)だよー</h1>')
