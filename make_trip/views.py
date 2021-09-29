@@ -12,7 +12,6 @@ from django.db.models import Sum
 import datetime
 from django import forms
 from django.utils.dateparse import parse_datetime
-from django.contrib.auth import get_user_model
 from django.views import generic
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.signing import dumps, BadSignature, SignatureExpired, loads
@@ -24,8 +23,6 @@ from django.views.decorators.csrf import requires_csrf_token
 import requests
 import json
 import traceback
-
-User = get_user_model()
 
 class Login(LoginView):
     form_class = Login

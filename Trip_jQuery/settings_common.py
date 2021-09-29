@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'django_boost',
     'bootstrap4',
     'django.contrib.humanize',
-    'django_ses',
+    'accounts',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
 ]
 
 MIDDLEWARE = [
@@ -132,9 +135,6 @@ LOGIN_URL = '/make_trip/'
 LOGIN_REDIRECT_URL = '/make_trip/myPage'
 LOGOUT_REDIRECT_URL = '/make_trip/'
 
-# 自作のUserモデルを使用する
-AUTH_USER_MODEL = 'make_trip.User'
-
 # ロギングの設定
 LOGGING = {
     'version': 1,
@@ -185,3 +185,24 @@ MEDIA_URL = '/media/'
 
 # デフォルトのメール送信元を設定
 DEFAULT_FROM_EMAIL = 'admin@example.com'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
+
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
+
+ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ''

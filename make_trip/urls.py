@@ -1,8 +1,6 @@
 from django.urls import path
 from . import  views
 
-handler500 = views.my_customized_server_error
-
 urlpatterns = [
     path('', views.Login.as_view(), name="login"),
     path('sign_up', views.SignUp.as_view(), name="signUp"),
