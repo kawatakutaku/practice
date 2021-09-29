@@ -5,7 +5,6 @@ from .forms import BudgetForm, MemoForm, SignUp, Login, GroupForm, TripForm, Spo
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
-# from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
 from .models import Budget, Spot, Other, Transport, Trip, Member, Group, Memo
 from django.db.models import Sum
