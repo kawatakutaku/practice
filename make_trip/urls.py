@@ -2,17 +2,11 @@ from django.urls import path
 from . import  views
 
 urlpatterns = [
-    path('', views.Login.as_view(), name="login"),
-    path('sign_up', views.SignUp.as_view(), name="signUp"),
-    path('sign_up_done', views.SignUpDone.as_view(), name="sign_up_done"),
-    path('sign_up_complete/<token>', views.SignUpComplete.as_view(), name="sign_up_complete"),
     path('trip/<int:num>', views.trip, name="trip"),
     path('members/<int:num>', views.members, name="members"),
     path('myPage', views.myPage, name="myPage"),
     path('groups', views.groups, name="groups"),
     path('group_trip/<int:num>', views.group_trip, name="group_trip"),
-    path('logout', views.Logout.as_view(), name="logout"),
-    path('logout_form', views.logout_form, name="logout_form"),
     path('delete/<int:num>', views.delete, name="delete"),
     path('other/<int:num>', views.other, name="other"),
     path('create_trip', views.create_trip, name="create_trip"),
