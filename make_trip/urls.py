@@ -1,7 +1,9 @@
 from django.urls import path
 from . import  views
 
+app_name = 'make_trip'
 urlpatterns = [
+    path('', views.IndexView.as_view(), name='index'),
     path('trip/<int:num>', views.trip, name="trip"),
     path('members/<int:num>', views.members, name="members"),
     path('myPage', views.myPage, name="myPage"),
@@ -25,4 +27,5 @@ urlpatterns = [
     path('add_member/<int:num>', views.add_member, name="add_member"),
     path('add_member_complete/<token>', views.add_member_complete, name="add_member_complete"),
     path('add_group', views.add_group, name="add_group"),
+    path('logout', views.LogoutView.as_view(), name="logout"),
 ]

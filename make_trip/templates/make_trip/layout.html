@@ -22,20 +22,25 @@
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'create_trip' %}">旅行作成</a>
+                        <a class="nav-link" href="{% url 'make_trip:create_trip' %}">旅行作成</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'myPage' %}">マイページ</a>
+                        <a class="nav-link" href="{% url 'make_trip:myPage' %}">マイページ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'groups' %}">グループ一覧</a>
+                        <a class="nav-link" href="{% url 'make_trip:groups' %}">グループ一覧</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'add_group' %}">グループ参加フォーム</a>
+                        <a class="nav-link" href="{% url 'make_trip:add_group' %}">グループ参加フォーム</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout_form' %}">ログアウト</a>
+                        <a class="nav-link" href="{% url 'make_trip:logout' %}">ログアウト</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>
                     </li>
                 </ul>
                 {% block navigation %} {% endblock %}

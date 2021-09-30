@@ -7,10 +7,7 @@
             <h3 class="text-light">ログアウトしますか？</h3>
         </div>
         <div class="col-12">
-            <form action="{% url 'logout_form' %}" method="post">
-                {% csrf_token %}
-                <a name="logout" id="logout" class="btn btn-light" href="{% url 'logout' %}" role="button" style="color: rgba(130, 130, 130, 1);">ログアウト</a>
-            </form>
+            <a name="logout" id="logout" class="btn btn-light" href="{% url 'account_logout' %}" role="button" style="color: rgba(130, 130, 130, 1);">ログアウト</a>
         </div>
     </div>
 </div>

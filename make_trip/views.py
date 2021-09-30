@@ -23,6 +23,12 @@ import requests
 import json
 import traceback
 
+class IndexView(generic.TemplateView):
+    template_name = 'make_trip/index.html'
+
+class LogoutView(generic.TemplateView):
+    template_name = 'make_trip/logout.html'
+
 # @login_required(login_url='/make_trip/')
 def add_member(request, num):
     try:
