@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'django_ses'
 ]
 
 MIDDLEWARE = [
