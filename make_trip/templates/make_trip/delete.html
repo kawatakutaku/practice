@@ -8,7 +8,7 @@
             <div class="pb-5 mb-5">
                 <div class="row justify-content-center">
                     <div class="col-12 m-3">
-                        <form action="{% url 'delete' id %}" method="post">
+                        <form action="{% url 'make_trip:delete' id %}" method="post">
                             {% csrf_token %}
                             <a class="btn btn-light p-4" href="#" role="button">
                                 {{ delete.trip_name }} <br>

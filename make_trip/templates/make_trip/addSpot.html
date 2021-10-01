@@ -7,7 +7,7 @@
 <div class="container-fluid mt-5">
     <div class="row justify-content-center d-flex">
         <div class="col-md-8 col-xl-6">
-            <form action="{% url 'tranSpot' id %}" method="post">
+            <form action="{% url 'make_trip:tranSpot' id %}" method="post">
                 {% csrf_token %}
                 <div class="row mb-5 justify-content-around">
                     <div class="col-2 mr-5">

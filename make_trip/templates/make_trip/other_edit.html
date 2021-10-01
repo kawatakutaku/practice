@@ -5,7 +5,7 @@
 <div class="container-fluid pt-5">
     <div class="row justify-content-center d-flex">
         <div class="col-md-8 col-xl-6">
-            <form action="{% url 'other_edit' id %}" method="post">
+            <form action="{% url 'make_trip:other_edit' id %}" method="post">
                 {% csrf_token %}
                     <div class="row mt-4">
                         <div class="col-12">

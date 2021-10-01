@@ -4,10 +4,10 @@
 {% block navigation %}
 <ul class="navbar-nav mr-3 mt-2 mt-lg-0">
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'members' group_id %}">メンバーを表示</a>
+        <a class="nav-link" href="{% url 'make_trip:members' group_id %}">メンバーを表示</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'add_member' group_id %}">招待リンク</a>
+        <a class="nav-link" href="{% url 'make_trip:add_member' group_id %}">招待リンク</a>
     </li>
 </ul>
 <span class="h6 text-light mb-0 mr-3">グループ名:『{{ group_name }}』({{ member_cnt }}人)</span><br>
@@ -19,7 +19,7 @@
     <div class="container-fluid">
         <div class="row d-flex justify-content-center mt-5">
             <div class="col-md-8 col-xl-8 col-12">
-                <form action="{% url 'trip' id %}" method="post">
+                <form action="{% url 'make_trip:trip' id %}" method="post">
                     {% csrf_token %}
                         <div class="row mb-5 justify-content-center">
                             <div class="col-3">
@@ -28,8 +28,8 @@
                             <div class="col-5">
                                 <h6 class="text-secondary">{{ trip.start|date:'Y/m-d'}} 〜 {{ trip.end|date:'m-d' }} </h6>
                             </div>
-                            <a class="text-success" href="{% url 'trip_edit' id %}"><i class="fa fa-edit"></i></a>
-                            <a class="ml-4 text-success" href="{% url 'delete' id %}"><i class="fas fa-trash-alt"></i></a>
+                            <a class="text-success" href="{% url 'make_trip:trip_edit' id %}"><i class="fa fa-edit"></i></a>
+                            <a class="ml-4 text-success" href="{% url 'make_trip:delete' id %}"><i class="fas fa-trash-alt"></i></a>
                         </div>
                         <div class="row mb-3 border-bottom border-light mx-auto p-2">
                             <div class="col-3">
@@ -41,7 +41,7 @@
                             <div class="col-3">
                                 <p class="text-secondary">¥ {{ spot_first.spot_cost|intcomma }}</p>
                             </div>
-                            <a href="{% url 'spot_edit' spot_first.id %}" class="text-success"><i class="fa fa-edit"></i></a>
+                            <a href="{% url 'make_trip:spot_edit' spot_first.id %}" class="text-success"><i class="fa fa-edit"></i></a>
                         </div>
                         {% for transport, spot in transports|zip:spots %}
                         <div class="row mb-3 justify-content-end border-bottom border-light mr-3 p-2">
@@ -57,7 +57,7 @@
                             <div class="col-2">
                                 <p class="text-secondary">¥ {{ transport.transport_fee|intcomma }}</p>
                             </div>
-                            <a href="{% url 'transport_edit' transport.id %}" class="text-success"><i class="fa fa-edit"></i></a>
+                            <a href="{% url 'make_trip:transport_edit' transport.id %}" class="text-success"><i class="fa fa-edit"></i></a>
                         </div>
                         <div class="row mb-3 border-bottom border-light mx-auto p-2">
                             <div class="col-3">
@@ -69,9 +69,9 @@
                             <div class="col-3">
                                 <p class="text-secondary">¥ {{ spot.spot_cost|intcomma }}</p>
                             </div>
-                            <a href="{% url 'spot_edit' spot.id %}" class="text-success"><i class="fa fa-edit"></i></a>
+                            <a href="{% url 'make_trip:spot_edit' spot.id %}" class="text-success"><i class="fa fa-edit"></i></a>
 
-                            <a href="{% url 'spot_delete' spot.id %}" class="ml-4 text-success"><i class="fas fa-trash-alt"></i></a>
+                            <a href="{% url 'make_trip:spot_delete' spot.id %}" class="ml-4 text-success"><i class="fas fa-trash-alt"></i></a>
                         </div>
                         {% endfor %}
                         <div class="row mt-5 mb-3">
@@ -85,14 +85,14 @@
                                     <div class="col-4">
                                         <h6 class="text-secondary">¥ {{ other.extra_cost|intcomma }} </h6>
                                     </div>
-                                    <a href="{% url 'other_edit' other.id %}" class="text-success"><i class="fa fa-edit"></i></a>
-                                    <a href="{% url 'other_delete' other.id %}" class="ml-4 text-success"><i class="fas fa-trash-alt"></i></a>
+                                    <a href="{% url 'make_trip:other_edit' other.id %}" class="text-success"><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'make_trip:other_delete' other.id %}" class="ml-4 text-success"><i class="fas fa-trash-alt"></i></a>
                                 </div>
                                 {% endfor %}
                             </div>
                         </div>
-                        <a class="btn btn-outline-success mr-3" href="{% url 'tranSpot' id %}" role="button">観光地を追加</a>
-                        <a class="btn btn-outline-success" href="{% url 'other' id %}" role="button">費用を追加</a>
+                        <a class="btn btn-outline-success mr-3" href="{% url 'make_trip:tranSpot' id %}" role="button">観光地を追加</a>
+                        <a class="btn btn-outline-success" href="{% url 'make_trip:other' id %}" role="button">費用を追加</a>
                         <div class="row justify-content-between mt-5">
                             <div class="col-6 text-secondary p-2">
                                 <p><span id="rest_money">予算：{{ budget|intcomma }}円<br><span class="border-top border-dark">(残り：{{ rest_money|intcomma }}円)</span></span></p>

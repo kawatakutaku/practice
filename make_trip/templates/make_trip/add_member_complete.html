@@ -6,7 +6,7 @@
     <div class="row justify-content-center d-flex mt-5">
         <div class="col-md-8 col-xl-6">
             <h2 class="text-secondary">『{{ group }}』に参加しますか？<br> </h2>
-            <form action="{% url 'add_member_complete' token %}" method="POST">
+            <form action="{% url 'make_trip:add_member_complete' token %}" method="POST">
                 {% csrf_token %}
                 <!-- views側で参加ボタンを押したらmyPageに画面遷移するようにしておく -->
                 <button type="submit" class="btn btn-success mt-5 mb-3 btn-lg">参加する</button>

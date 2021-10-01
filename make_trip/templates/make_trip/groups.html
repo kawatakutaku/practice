@@ -10,13 +10,13 @@
             <div class="row justify-content-center">
                 {% for group, group_owner in all_group|zip:group_owners %}
                 <div class="col-xs-4 col-sm-5 col-md-5 m-3">
-                    <a class="btn btn-light pt-4 pb-4" href="{% url 'group_trip' group.id %}" role="button">
+                    <a class="btn btn-light pt-4 pb-4" href="{% url 'make_trip:group_trip' group.id %}" role="button">
                         『{{ group.title }}』<br>
                         グループの主催者：{{ group_owner }}
                     </a>
                     <div class="row justify-content-end">
                         <div class="col-sm-7 col-md-4 col-xl-6 col-6">
-                            <a class="text-success" href="{% url 'group_remove' group.id %}"><i class="fas fa-trash-alt"></i></a>
+                            <a class="text-success" href="{% url 'make_trip:group_remove' group.id %}"><i class="fas fa-trash-alt"></i></a>
                         </div>
                     </div>
                 </div>

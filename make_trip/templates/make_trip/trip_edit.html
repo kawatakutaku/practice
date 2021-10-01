@@ -5,7 +5,7 @@
 <div class="container-fluid position-absolute" style="bottom: 55%; right: 50%; transform: translate(50%, 50%);">
     <div class="row justify-content-center d-flex">
         <div class="col-md-8 col-xl-6">
-            <form action="{% url 'trip_edit' id %}" method="post">
+            <form action="{% url 'make_trip:trip_edit' id %}" method="post">
                 {% csrf_token %}
                 <h1 class="text-light">旅行タイトル</h1>
                 <div class="row mb-4 mt-3 justify-content-center">

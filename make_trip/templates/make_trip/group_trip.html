@@ -3,13 +3,13 @@
 {% block navigation %}
 <ul class="navbar-nav mr-3 mt-2 mt-lg-0">
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'members' id %}">メンバーを表示</a>
+        <a class="nav-link" href="{% url 'make_trip:members' id %}">メンバーを表示</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'create_this_group_trip' id %}">このグループで旅行作成</a>
+        <a class="nav-link" href="{% url 'make_trip:create_this_group_trip' id %}">このグループで旅行作成</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'add_member' id %}">招待リンク</a>
+        <a class="nav-link" href="{% url 'make_trip:add_member' id %}">招待リンク</a>
     </li>
 </ul>
 {% endblock %}
@@ -35,14 +35,14 @@
                             <div class="row justify-content-center">
                                 {% for content in trip_content_future %}
                                     <div class="col-md-4 m-3 col-sm-4">
-                                        <a class="btn btn-light pb-4 pt-4" href="{% url 'trip' content.id %}" role="button">
+                                        <a class="btn btn-light pb-4 pt-4" href="{% url 'make_trip:trip' content.id %}" role="button">
                                             {{ content.trip_name }} <br>
                                             {{ content.start }} 〜 {{ content.end }}
                                         </a>
                                         <div class="row justify-content-end">
                                             <div class="col-sm-7 col-md-7 col-7 col-xl-4">
-                                                <a class="text-success" href="{% url 'trip' content.id %}"><i class="fa fa-edit"></i></a>
-                                                <a class="ml-4 text-success" href="{% url 'delete' content.id %}"><i class="fas fa-trash-alt"></i></a>
+                                                <a class="text-success" href="{% url 'make_trip:trip' content.id %}"><i class="fa fa-edit"></i></a>
+                                                <a class="ml-4 text-success" href="{% url 'make_trip:delete' content.id %}"><i class="fas fa-trash-alt"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -55,14 +55,14 @@
                             <div class="row justify-content-center">
                                 {% for content in trip_content_before %}
                                 <div class="col-4 m-3">
-                                    <a class="btn btn-light btn-lg" href="{% url 'trip' content.id %}" role="button">
+                                    <a class="btn btn-light btn-lg" href="{% url 'make_trip:trip' content.id %}" role="button">
                                         {{ content.trip_name }} <br>
                                         {{ content.start }} 〜 {{ content.end }}
                                     </a>
                                     <div class="row justify-content-end">
                                         <div class="col-sm-7 col-md-7 col-7 col-xl-4">
-                                            <a class="text-success" href="{% url 'trip' content.id %}"><i class="fa fa-edit"></i></a>
-                                            <a class="ml-4 text-success" href="{% url 'delete' content.id %}"><i class="fas fa-trash-alt"></i></a>
+                                            <a class="text-success" href="{% url 'make_trip:trip' content.id %}"><i class="fa fa-edit"></i></a>
+                                            <a class="ml-4 text-success" href="{% url 'make_trip:delete' content.id %}"><i class="fas fa-trash-alt"></i></a>
                                         </div>
                                     </div>
                                 </div>

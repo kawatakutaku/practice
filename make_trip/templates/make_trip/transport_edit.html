@@ -5,7 +5,7 @@
 <div class="container-fluid pt-5">
     <div class="row justify-content-center d-flex">
         <div class="col-md-8 col-xl-6">
-            <form action="{% url 'transport_edit' id %}" method="post">
+            <form action="{% url 'make_trip:transport_edit' id %}" method="post">
                 {% csrf_token %}
                     <h4 class="text-light mb-3">移動手段</h4>
                     <div class="row justify-content-center mb-5">

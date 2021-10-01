@@ -7,6 +7,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate
 from .models import Budget, Spot, Other, Transport, Trip, Member, Group, Memo
+from accounts.models import CustomUser
 from django.db.models import Sum
 import datetime
 from django import forms
@@ -22,6 +23,7 @@ from django.views.decorators.csrf import requires_csrf_token
 import requests
 import json
 import traceback
+
 
 class IndexView(generic.TemplateView):
     template_name = 'make_trip/index.html'
@@ -83,7 +85,7 @@ def add_member_complete(request, token):
 
     # グループに所属しているメンバーを取得する
     group_member = Member.objects.filter(group=this_group).values('user')
-    member_email = [User.objects.filter(id=group_member[i]['user']).values('email')[0]['email'] for i in range(len(group_member))]
+    member_email = [CustomUser.objects.filter(id=group_member[i]['user']).values('email')[0]['email'] for i in range(len(group_member))]
 
     if request.method == 'POST':
         if str(request.user) in member_email:   # request.userをstr型にしておく必要がある
@@ -169,7 +171,7 @@ def groups(request):
     if my_group:
         all_group = my_group.values('id', 'title', 'user')
         # グループの作成者のusernameを取得
-        group_owners = [User.objects.filter(id=all_group[i]['user']).values('username')[0]['username'] for i in range(len(all_group))]
+        group_owners = [CustomUser.objects.filter(id=all_group[i]['user']).values('username')[0]['username'] for i in range(len(all_group))]
 
     else:
         all_group = None
@@ -250,7 +252,7 @@ def members(request, num):
     if member_exist:
         # グループ内の人数とグループの名前を取得
         members = Member.objects.filter(group=num).values('user', 'id')
-        member_username = [User.objects.filter(id=members[i]['user']).values('username')[0]['username'] for i in range(len(members))]
+        member_username = [CustomUser.objects.filter(id=members[i]['user']).values('username')[0]['username'] for i in range(len(members))]
         group_name = Group.objects.filter(id=num).values('title')[0]['title']
 
         # メンバー全員のIDを取得
@@ -279,7 +281,7 @@ def member_delete(request, num):
 
     request_member = Member.objects.filter(group=member.group.id).filter(user=request.user).first()
 
-    member_info = User.objects.filter(id=member.user.id).values('email', 'username').first()
+    member_info = CustomUser.objects.filter(id=member.user.id).values('email', 'username').first()
     if request_member:
         if request.method == 'POST':
             if str(request.user) == member_info['email']:
@@ -972,7 +974,7 @@ def group_remove(request, num):
     member = Member.objects.filter(group=num).filter(user=request.user).first()
     if member:
         group_name = Group.objects.filter(id=num).values('title')[0]['title']
-        username = User.objects.filter(id=this_group.user.id).values('username')[0]['username']
+        username = CustomUser.objects.filter(id=this_group.user.id).values('username')[0]['username']
 
         if member:
             if request.method == 'POST':
