@@ -4,54 +4,49 @@
 {% load static %}
 
 {% block container %}
-<section>
-    <div class="container">
-        <div class="row align-items-center">
-        <div class="col-lg-6 order-lg-2">
-            <div class="p-5">
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" src="{% static 'img/bastien-nvs-sN5ZojiDyPg-unsplash.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">Make Trip</h2>
+                        <p>Web上で作成/編集/削除ができる旅行作成アプリ</p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-6 order-lg-1">
-            <div class="p-5">
-            <h2 class="display-4">Web Diary</h2>
-            <p>Web上で作成/編集/削除ができる日記</p>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" src="{% static 'img/nabit-photos-6SX5WcTfq3k-unsplash.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <h2 class="display-4">Memory</h2>
+                        <p>旅行を記憶にも記録にも刻もう</p>
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="p-5">
+                        <img class="img-fluid rounded-circle" src="{% static 'img/rodrigo-diogo-0_YVMsXO4WU-unsplash.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <h2 class="display-4">Make it count</h2>
+                        <p>旅行のひと時を無駄なく楽しもう</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</section>
-
-<section>
-    <div class="container">
-        <div class="row align-items-center">
-        <div class="col-lg-6">
-            <div class="p-5">
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="p-5">
-            <h2 class="display-4">Save Your Diary</h2>
-            <p>あなたの日記をWebに保存</p>
-            </div>
-        </div>
-        </div>
-    </div>
-</section>
-
-<section>
-    <div class="container">
-        <div class="row align-items-center">
-        <div class="col-lg-6 order-lg-2">
-            <div class="p-5">
-            </div>
-        </div>
-        <div class="col-lg-6 order-lg-1">
-            <div class="p-5">
-            <h2 class="display-4">Membership System</h2>
-            <p>会員制のWeb日記サービス</p>
-            </div>
-        </div>
-        </div>
-    </div>
-</section>
+</div>
 {% endblock %}
