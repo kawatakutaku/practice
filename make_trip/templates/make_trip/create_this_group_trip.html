@@ -15,13 +15,13 @@
         <div class="col-md-8 col-xl-6">
             <form action="{% url 'make_trip:create_this_group_trip' id %}" method="post">
                 {% csrf_token %}
-                <h4 class="text-light mb-2">旅行タイトルの作成</h4>
+                <h4 class="text-secondary mb-2">旅行タイトルの作成</h4>
                     <div class="row p-3 justify-content-center">
                         <div class="col-8">
                             {{ trip.trip_name }}
                         </div>
                     </div>
-                    <h4 class="text-light mt-5">旅行のスケジュール</h4>
+                    <h4 class="text-secondary mt-5">旅行のスケジュール</h4>
                     <div class="row mt-3 justify-content-center">
                         <div class="col-5" id="start">
                             {{ trip.start }}
@@ -41,7 +41,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    <h4 class="text-light mt-5">予算を入力してください</h4>
+                    <h4 class="text-secondary mt-5">予算を入力してください</h4>
                     <div class="row justify-content-center mt-3">
                         <div class="col-10">
                             {{ budget.predict_money }}

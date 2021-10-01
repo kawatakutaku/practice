@@ -20,7 +20,7 @@
             <div class="row justify-content-center d-flex mt-5">
                 <div class="col-md-8 col-xl-6">
                     <h4 class="text-secondary mb-5">『{{ group_name }}』の旅行一覧(人数：{{ member_cnt }}人)</h4>
-                    <h4 class="text-light">まだ、旅行は登録されていません...</h4>
+                    <h4 class="text-secondary">まだ、旅行は登録されていません...</h4>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                 <div class="col-md-8">
                     <div class="border-bottom border-dark pb-5 mb-5">
                         <h4 class="text-secondary mb-5">『{{ group_name }}』の旅行一覧(メンバー：{{ member_cnt }}人)</h4>
-                        <h4 class="text-light">次の旅行</h4>
+                        <h4 class="text-secondary">次の旅行</h4>
                         {% if trip_content_future %}
                             <div class="row justify-content-center">
                                 {% for content in trip_content_future %}
@@ -50,7 +50,7 @@
                                 </div>
                                 {% endif %}
                             </div>
-                            <h4 class="text-light">これまでの旅行</h4>
+                            <h4 class="text-secondary">これまでの旅行</h4>
                             {% if trip_content_before %}
                             <div class="row justify-content-center">
                                 {% for content in trip_content_before %}

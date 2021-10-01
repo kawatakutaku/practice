@@ -15,7 +15,6 @@
     </head>
     <body class="h-100 text-center" style="background-color: rgba(110, 155, 94, 0.47);">
         <nav class="navbar navbar-expand-sm navbar-light p-30" style="background-color: rgba(101, 152, 106, 0.99);">
-            <span class="navbar-brand mb-0 font-weight-lighter" style="font-style: italic;">Navigation</span>
             <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
                 aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -33,15 +32,24 @@
                         <a class="nav-link" href="{% url 'make_trip:groups' %}">グループ一覧</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'make_trip:add_group' %}">グループ参加フォーム</a>
+                        <a class="nav-link" href="{% url 'make_trip:add_group' %}">グループ参加</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_change_password' %}">パスワードの変更</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_reset_password' %}">パスワードのリセット</a>
+                    </li>
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'make_trip:logout' %}">ログアウト</a>
                     </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>
-                    </li>
                 </ul>
                 {% block navigation %} {% endblock %}
                 {% if user.is_authenticated %}

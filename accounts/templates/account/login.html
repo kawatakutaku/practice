@@ -1,47 +1,20 @@
-<!doctype html>
-<html lang="ja" class="h-100">
-    <head>
-        <title>Title</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!DOCTYPE html>
+{% extends 'make_trip/layout.html' %}
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
-    </head>
-    <body class="text-center h-100 position-relative" style="background-color: rgba(110, 155, 94, 0.47);">
-        <div class="container-fluid p-3">
-            <div class="row justify-content-center mt-4">
-                <div class="col-12 mt-5 col-md-4 col-xl-2 col-12">
-                    <h1 class="text-light">Welcome!</h1>
-                    <form action="{% url 'account_login' %}" method="POST">
-                        {% csrf_token %}
-                        {% for field in form %}
-                        <p><label class="text-secondary">{{ field.label }}</label>{{ field }}</p>
-                        {% endfor %}
-                        {% if form.non_field_errors %}
-                        <ul class="alert alert-danger list-unstyled">
-                            <li style="list-style-type: none;">
-                                <ul class="alert alert-danger list-unstyled">
-                                    {% for error in form.non_field_errors %}
-                                    <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        </ul>
-                        {% endif %}
-                        <button type="submit" class="btn btn-success btn-block">ログイン</button>
-                    </form>
-                    <a name="signUp" id="signUp" class="btn btn-success btn-block mt-4" href="{% url 'account_signup' %}" role="button">新規登録</a>
-                </div>
+{% load bootstrap4 %}
+
+{% block container %}
+    <div class="container-fluid p-3">
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 mt-5 col-md-4 col-xl-2 col-12">
+                <h1 class="text-light">Welcome!</h1>
+                <form action="{% url 'account_login' %}" method="POST">
+                    {% csrf_token %}
+                    {% bootstrap_form form layout="inline" %}
+                    <button type="submit" class="btn btn-success btn-block">ログイン</button>
+                </form>
+                <a name="signUp" id="signUp" class="btn btn-success btn-block mt-4" href="{% url 'account_signup' %}" role="button">新規登録</a>
             </div>
         </div>
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    </body>
-</html>
+    </div>
+{% endblock %}

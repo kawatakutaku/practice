@@ -7,13 +7,13 @@
         <div class="col-md-8 col-xl-6">
             <form action="{% url 'make_trip:spot_edit' id %}" method="post">
                 {% csrf_token %}
-                <h4 class="text-light mb-4">観光地</h4>
+                <h4 class="text-secondary mb-4">観光地</h4>
                 <div class="row mb-5 justify-content-center">
                     <div class="col-8">
                         {{ spot.spot_name }}
                     </div>
                 </div>
-                <h4 class="text-light mb-4">到着時間</h4>
+                <h4 class="text-secondary mb-4">到着時間</h4>
                 <div class="row mb-5 justify-content-center">
                     <div class="col-8" id="spot_time">
                         {{ spot.spot_time }}
@@ -25,7 +25,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <h4 class="text-light mb-4">観光地の料金</h4>
+                <h4 class="text-secondary mb-4">観光地の料金</h4>
                 <div class="row mb-5 justify-content-center">
                     <div class="col-8">
                         {{ spot.spot_cost }}

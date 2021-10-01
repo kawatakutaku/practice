@@ -7,13 +7,13 @@
         <div class="col-md-8 col-xl-6">
             <form action="{% url 'make_trip:transport_edit' id %}" method="post">
                 {% csrf_token %}
-                    <h4 class="text-light mb-3">移動手段</h4>
+                    <h4 class="text-secondary mb-3">移動手段</h4>
                     <div class="row justify-content-center mb-5">
                         <div class="col-8">
                             {{ transport.transport_name }}
                         </div>
                     </div>
-                    <h4 class="text-light mb-3">乗る時間</h4>
+                    <h4 class="text-secondary mb-3">乗る時間</h4>
                     <div class="row justify-content-center mb-5">
                         <div class="col-8" id="transport_time">
                             {{ transport.transport_time }}
@@ -25,7 +25,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    <h4 class="text-light mb-3">交通費</h4>
+                    <h4 class="text-secondary mb-3">交通費</h4>
                     <div class="row justify-content-center mb-5">
                         <div class="col-8">
                             {{ transport.transport_fee }}

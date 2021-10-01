@@ -7,13 +7,13 @@
         <div class="col-md-8 col-xl-6">
             <form action="{% url 'make_trip:trip_edit' id %}" method="post">
                 {% csrf_token %}
-                <h1 class="text-light">旅行タイトル</h1>
+                <h1 class="text-secondary">旅行タイトル</h1>
                 <div class="row mb-4 mt-3 justify-content-center">
                     <div class="col-8">
                         {{ trip.trip_name }}
                     </div>
                 </div>
-                <h1 class="text-light mt-5">旅行のスケジュール</h1>
+                <h1 class="text-secondary mt-5">旅行のスケジュール</h1>
                 <div class="row mt-5 justify-content-center">
                     <div class="col-5" id="start">
                         {{ trip.start}}
